@@ -79,3 +79,11 @@ ga('send', 'pageview');
 </body>
 </html>
 2019/10/12 14:17:55 bitlflyer.go:99: action=GetBalance err=invalid character '<' looking for beginning of value
+2019/10/13 22:40:47 bitlflyer.go:56: action=dorequest endpoint=https://api.bitflyer.com/ticker
+2019/10/13 22:40:47 bitlflyer.go:32: 1570974047
+2019/10/13 22:43:18 bitlflyer.go:56: action=dorequest endpoint=https://api.bitflyer.com/ticker
+2019/10/13 22:43:18 bitlflyer.go:32: 1570974198
+2019/10/13 22:44:09 bitlflyer.go:56: action=dorequest endpoint=https://api.bitflyer.com/ticker
+2019/10/13 22:44:09 bitlflyer.go:32: 1570974249
+2019/10/13 22:44:30 bitlflyer.go:56: action=dorequest endpoint=https://api.bitflyer.com/ticker
+2019/10/13 22:44:30 bitlflyer.go:32: 1570974270
