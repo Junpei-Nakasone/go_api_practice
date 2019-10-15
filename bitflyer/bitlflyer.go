@@ -287,5 +287,40 @@ type Order struct {
 }
 
 type ResponseSendChildOrder struct {
-	ChildOrderAcceptanceID string `json:"child_order_accesptance_id"`
+	ChildOrderAcceptanceID string `json:"child_order_acceptance_id"`
+}
+
+// structは、ポインタで返した方がオーバーヘッドがない。コピーを作って渡すというものではないので(?)ポインタを返す方法が一般的。
+func (api *APIClient) SendOrder(order *Order) (*ResponseSendChildOrder, error) {
+	data, err := json.Marshal(order)
+	if err != nil {
+		return nil, err
+	}
+	url := "me/sendchildorder"
+
+	// 第３引数のmapはPOST通信の場合は空になる、mapの空はnilで表現するのではなく{}で書くみたい
+	resp, err := api.doRequest("POST", url, map[string]string{}, data)
+	if err != nil {
+		return nil, err
+	}
+	var response ResponseSendChildOrder
+	err = json.Unmarshal(resp, &response)
+	if err != nil {
+		return nil, err
+	}
+	return &response, nil
+}
+
+// スライスを返している時にはポインタを渡していない。スライスは規定配列に対するエイリアスを作成するということなので、特にポインタとして返す必要はない。
+func (api *APIClient) ListOrder(query map[string]string) ([]Order, error) {
+	resp, err := api.doRequest("GET", "me/getchildorders", query, nil)
+	if err != nil {
+		return nil, err
+	}
+	var responseListOrder []Order
+	err = json.Unmarshal(resp, &responseListOrder)
+	if err != nil {
+		return nil, err
+	}
+	return responseListOrder, nil
 }
