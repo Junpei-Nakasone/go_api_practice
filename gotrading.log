@@ -87,3 +87,4 @@ ga('send', 'pageview');
 2019/10/13 22:44:09 bitlflyer.go:32: 1570974249
 2019/10/13 22:44:30 bitlflyer.go:56: action=dorequest endpoint=https://api.bitflyer.com/ticker
 2019/10/13 22:44:30 bitlflyer.go:32: 1570974270
+2019/10/15 22:09:32 bitlflyer.go:58: action=doRequest endpoint=https://api.bitflyer.com/v1/ticker

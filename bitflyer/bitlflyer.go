@@ -137,15 +137,23 @@ func (t *Ticker) TruncateDateTime(duration time.Duration) time.Time {
 
 func (api *APIClient) GetTicker(productCode string) (*Ticker, error) {
 	url := "ticker"
+
+	// BTC_USDの場合、doRequest("GET", "ticker", map[string]string{"product_code:"BTC_USD},nil)となる
 	resp, err := api.doRequest("GET", url, map[string]string{"product_code": productCode}, nil)
 	if err != nil {
 		return nil, err
 	}
+
+	// 構造体Tickerを格納する変数tickerを宣言
 	var ticker Ticker
+
+	// 上記doRequestでjson形式で返ってきたrespを構造体tickerにunmarshalして格納
 	err = json.Unmarshal(resp, &ticker)
 	if err != nil {
 		return nil, err
 	}
+
+	// 上記の一連の流れでデータを取得した構造体tickerを返す
 	return &ticker, nil
 }
 
@@ -251,4 +259,33 @@ OUTER:
 			}
 		}
 	}
+}
+
+type Order struct {
+	ID                     int     `json:"id"`
+	ChildOrderAcceptanceID string  `json:"child_order_acceptance_id"`
+	ProductCode            string  `json:"product_code"`
+	ChildOrderType         string  `json:"child_order_type"`
+	Side                   string  `json:"side"`
+	Price                  float64 `json:"price"`
+	Size                   float64 `json:"size"`
+	MinuteToExpires        int     `json:"minute_to_expire"`
+	TimeInForce            string  `json:"time_in_force"`
+	Status                 string  `json:"status"`
+	ErrorMessage           string  `json:"error_message"`
+	AveragePrice           float64 `json:"average_price"`
+	ChildOrderState        string  `json:"child_order_state"`
+	ExpireDate             string  `json:"expire_date"`
+	ChildOrderDate         string  `json:"child_order_date"`
+	OutstandingSize        float64 `json:"outstanding_size"`
+	CancelSize             float64 `json:"cancel_size"`
+	ExecutedSize           float64 `json:"executed_size"`
+	TotalCommission        float64 `json:"total_commission"`
+	Count                  int     `json:"count"`
+	Before                 int     `json:"before"`
+	After                  int     `json:"after"`
+}
+
+type ResponseSendChildOrder struct {
+	ChildOrderAcceptanceID string `json:"child_order_accesptance_id"`
 }
