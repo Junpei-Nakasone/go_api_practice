@@ -15,6 +15,7 @@ const (
 	tableNameSignalEvents = "signal_events"
 )
 
+// 変数DbConnectionに*sql.DBを格納することで、DBの操作ができる(?)
 var DbConnection *sql.DB
 
 func GetCandleTableName(productCode string, duration time.Duration) string {
@@ -23,10 +24,15 @@ func GetCandleTableName(productCode string, duration time.Duration) string {
 
 func init() {
 	var err error
+
+	// *sql.DBが入ってる変数にsql.Openして、第一引数をドライバー、第二引数を
+	// DB名にして実行し、DBを作成できる
 	DbConnection, err = sql.Open(config.Config.SQLDriver, config.Config.DbName)
 	if err != nil {
 		log.Fatalln(err)
 	}
+
+	// 作成したDBで実行したいSQL文を変数cmdに格納
 	cmd := fmt.Sprintf(`
 		CREATE TABLE IF NOT EXISTS %s (
 			time DATETIME PRIMARY KEY TO NOT NULL,
