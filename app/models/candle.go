@@ -55,6 +55,7 @@ func (c *Candle) Save() error {
 	return err
 }
 
+// SQLのSELECTを行う関数
 func GetCandle(productCode string, duration time.Duration, dateTime time.Time) *Candle {
 	tableName := GetCandleTableName(productCode, duration)
 	cmd := fmt.Sprintf("SELECT time, open, close, high, low, volume FROM %s WHERE time = ?", tableName)
@@ -72,12 +73,14 @@ func CreateCandleWithDuration(ticker bitflyer.Ticker, productCode string, durati
 
 	price := ticker.GetMidPrice()
 
+	// 最初にキャンドルを作るコード
 	if currentCandle == nil {
 		candle := NewCandle(productCode, duration, ticker.TruncateDateTime(duration), price, price, price, price, ticker.Volume)
 		candle.Create()
 		return true
 	}
 
+	// すでにキャンドルがある場合に、値を更新するコード
 	if currentCandle.High <= price {
 		currentCandle.High = price
 	} else if currentCandle.Low >= price {
@@ -86,5 +89,6 @@ func CreateCandleWithDuration(ticker bitflyer.Ticker, productCode string, durati
 	currentCandle.Volume += ticker.Volume
 	currentCandle.Close = price
 	currentCandle.Save()
+	// 新しくcreateした訳ではないのでfalseを返す
 	return false
 }
