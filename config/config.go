@@ -26,7 +26,7 @@ var Config ConfigList
 func init() {
 	cfg, err := ini.Load("config.ini")
 	if err != nil {
-		log.Printf("Failed to read: %v", err)
+		log.Printf("Failed to read file: %v", err)
 		os.Exit(1)
 	}
 
