@@ -17,6 +17,7 @@ import (
 	"github.com/gorilla/websocket"
 )
 
+// bitflyerAPIに接続するためのbaseURL
 const baseURL = "https://api.bitflyer.com/v1/"
 
 type APIClient struct {
