@@ -105,6 +105,7 @@ func (api *APIClient) GetBalance() ([]Balance, error) {
 	return balance, nil
 }
 
+// bitflyerAPIのレスポンスを受け取るためのstruct
 type Ticker struct {
 	ProductCode     string  `json:"product_code"`
 	Timestamp       string  `json:"timestamp"`
