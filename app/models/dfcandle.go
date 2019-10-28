@@ -5,6 +5,9 @@ import "time"
 // UIにcandleのデータを渡す
 
 // DataFrameに対して特定の情報だけ取れるようにする
+// Candleは同じmodelsパッケージのcandle.goにある構造体Candle
+// ProductCodeとDurationはDBテーブルを指定するために必要な情報で、
+// 構造体Candleからは必要な情報だけ取れるようにCandlesに格納している？
 type DataFrameCandle struct {
 	ProductCode string        `json:"product_code"`
 	Duration    time.Duration `json:"duration"`
@@ -13,8 +16,11 @@ type DataFrameCandle struct {
 
 // DataFrameCandleのtimeだけが入っているスライスを返すことができる関数
 func (df *DataFrameCandle) Times() []time.Time {
-	// 変数名sのスライスを作る
+	// 変数名sのスライスを作る,
+	// キャパシティがdfcandleのlenでtimeが入るスライス
 	s := make([]time.Time, len(df.Candles))
+
+	// dfCandleの長さでfor文を回す
 	for i, candle := range df.Candles {
 		// dfCandleのtimeだけが入っているスライスを返す
 		s[i] = candle.Time

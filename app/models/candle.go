@@ -86,8 +86,15 @@ func CreateCandleWithDuration(ticker bitflyer.Ticker, productCode string, durati
 	return false
 }
 
+// 引数のproductCodemとdurationでDBテーブルを指定し、limitでいくつ取得するか決める
+// dfcandle.goの構造体DataFrameCandleを返す
 func GetAllCandle(productCode string, duration time.Duration, limit int) (dfCandle *DataFrameCandle, err error) {
+
+	//　引数の情報を元にDBテーブルを変数tableNameに格納
 	tableName := GetCandleTableName(productCode, duration)
+
+	// いったん全部取得してDESCで順番をひっくり返し、LIMITで後ろを切り、(古い情報を除外し)
+	// その後timeをASCで並べるSQL文
 	cmd := fmt.Sprintf(`SELECT * FROM (
 		SELECT time, open, close, high, low, volume FROM %s ORDER BY time DESC LIMIT ?
 		) ORDER BY time ASC;`, tableName)
@@ -97,6 +104,7 @@ func GetAllCandle(productCode string, duration time.Duration, limit int) (dfCand
 	}
 	defer rows.Close()
 
+	//
 	dfCandle = &DataFrameCandle{}
 	dfCandle.ProductCode = productCode
 	dfCandle.Duration = duration
