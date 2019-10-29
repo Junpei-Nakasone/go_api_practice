@@ -35,6 +35,8 @@ func (c *Candle) TableName() string {
 	return GetCandleTableName(c.ProductCode, c.Duration)
 }
 
+// Create()は先にCandle structにデータが入っている前提で
+// その情報をDBに入れる関数
 func (c *Candle) Create() error {
 	cmd := fmt.Sprintf("INSERT INTO %s (time, open, close, high, low, volume) VALUES (?, ?, ?, ?, ?, ?)", c.TableName())
 	_, err := DbConnection.Exec(cmd, c.Time.Format(time.RFC3339), c.Open, c.Close, c.High, c.Low, c.Volume)
@@ -44,6 +46,8 @@ func (c *Candle) Create() error {
 	return err
 }
 
+// Create()は先にCandle structにデータが入っている前提で
+// その情報を更新する関数
 func (c *Candle) Save() error {
 	cmd := fmt.Sprintf("UPDATE %s SET open = ?, close = ?, high = ?, low = ?, volume = ? WHERE time = ?", c.TableName())
 	_, err := DbConnection.Exec(cmd, c.Open, c.Close, c.High, c.Low, c.Volume, c.Time.Format(time.RFC3339))
@@ -53,6 +57,7 @@ func (c *Candle) Save() error {
 	return err
 }
 
+// まだCandle structがない状態で、DBからデータを取得し、Candleに入れて返す関数
 func GetCandle(productCode string, duration time.Duration, dateTime time.Time) *Candle {
 	tableName := GetCandleTableName(productCode, duration)
 	cmd := fmt.Sprintf("SELECT time, open, close, high, low, volume FROM  %s WHERE time = ?", tableName)
