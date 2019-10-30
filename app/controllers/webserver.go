@@ -13,6 +13,7 @@ import (
 	"github.com/gotrading/config"
 )
 
+// htmlファイルをキャッシュする？
 var templates = template.Must(template.ParseFiles("app/views/chart.html"))
 
 func viewChartHandler(w http.ResponseWriter, r *http.Request) {
