@@ -17,7 +17,7 @@ import (
 var templates = template.Must(template.ParseFiles("app/views/chart.html"))
 
 func viewChartHandler(w http.ResponseWriter, r *http.Request) {
-
+	// ExecuteTemplateの第３引数は渡したいデータ
 	err := templates.ExecuteTemplate(w, "chart.html", nil)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -52,6 +52,7 @@ func apiMakeHandler(fn func(http.ResponseWriter, *http.Request)) http.HandlerFun
 }
 
 func apiCandleHandler(w http.ResponseWriter, r *http.Request) {
+	// URLでkeyがproduct_codeのqueryを変数productCodeに格納
 	productCode := r.URL.Query().Get("product_code")
 	if productCode == "" {
 		APIError(w, "No product_code param", http.StatusBadRequest)

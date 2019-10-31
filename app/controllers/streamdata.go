@@ -19,6 +19,8 @@ func StreamIngestionData() {
 	// goroutineを回してリアルタイムでAPIから情報を取得する
 	go apiClient.GetRealTimeTicker(config.Config.ProductCode, tickerChannl)
 
+	// goroutineにすることで他の関数をブロックすることなく、
+	// 並列でデータを取りに行く
 	go func() {
 		for ticker := range tickerChannl {
 			// ログにリアルタイムで取得しているデータを出力する
