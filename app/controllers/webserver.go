@@ -24,18 +24,27 @@ func viewChartHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// JSONのエラーを返すstruct, あとでmarshalして返す
 type JSONError struct {
 	Error string `json:"error"`
 	Code  int    `json:"code"`
 }
 
+//　エラーをJSONで返すための関数？
 func APIError(w http.ResponseWriter, errMessage string, code int) {
+	// httpヘッダの情報を追加
 	w.Header().Set("Content-Type", "application/json")
+
+	// 第３引数のcodeをヘッダに追加
 	w.WriteHeader(code)
+
+	// JSONErrorのstructに第二引数のerrMessageと第３引数のcodeを入れて
+	// 変数jsonErrorに格納
 	jsonError, err := json.Marshal(JSONError{Error: errMessage, Code: code})
 	if err != nil {
 		log.Fatal(err)
 	}
+	// ResponseWriterに変数jsonErrorを追加
 	w.Write(jsonError)
 }
 
