@@ -52,10 +52,14 @@ var apiValidPath = regexp.MustCompile("^/api/candle/$")
 
 func apiMakeHandler(fn func(http.ResponseWriter, *http.Request)) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
+		// r.URLにapiValidPathとマッチする文字列があるか見て変数mに格納
 		m := apiValidPath.FindStringSubmatch(r.URL.Path)
+		// apiValidPathとマッチするものがない場合はAPIErrorを返す
 		if len(m) == 0 {
 			APIError(w, "Not found", http.StatusNotFound)
 		}
+		// apiValidPathとマッチするものがあれば、
+		// fnにresponseWriterとhttp.Requestを入れて返す
 		fn(w, r)
 	}
 }
@@ -90,6 +94,7 @@ func apiCandleHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func StartWebServer() error {
+	// "/api/candle/"のURLはapiMakeHandlerの処理を行う
 	http.HandleFunc("/api/candle/", apiMakeHandler(apiCandleHandler))
 	http.HandleFunc("/chart/", viewChartHandler)
 	return http.ListenAndServe(fmt.Sprintf(":%d", config.Config.Port), nil)
