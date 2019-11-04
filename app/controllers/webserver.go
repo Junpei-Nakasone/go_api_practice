@@ -68,6 +68,7 @@ func apiCandleHandler(w http.ResponseWriter, r *http.Request) {
 	// URLでkeyがproduct_codeのqueryを変数productCodeに格納
 	productCode := r.URL.Query().Get("product_code")
 	if productCode == "" {
+		// responseWriterとエラーメッセージとステータスを返す
 		APIError(w, "No product_code param", http.StatusBadRequest)
 		return
 	}
