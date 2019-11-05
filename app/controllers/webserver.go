@@ -72,6 +72,7 @@ func apiCandleHandler(w http.ResponseWriter, r *http.Request) {
 		APIError(w, "No product_code param", http.StatusBadRequest)
 		return
 	}
+	// keyがlimitのクエリを変数strLimitに格納
 	strLimit := r.URL.Query().Get("limit")
 	limit, err := strconv.Atoi(strLimit)
 	if strLimit == "" || err != nil || limit < 0 || limit > 1000 {
