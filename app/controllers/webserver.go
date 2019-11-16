@@ -52,6 +52,7 @@ func apiMakeHandler(fn func(http.ResponseWriter, *http.Request)) http.HandlerFun
 
 func apiCandleHandler(w http.ResponseWriter, r *http.Request) {
 	productCode := r.URL.Query().Get("product_code")
+	// productCodeが空ならエラーを返す
 	if productCode == "" {
 		APIError(w, "No product_code param", http.StatusBadRequest)
 		return
